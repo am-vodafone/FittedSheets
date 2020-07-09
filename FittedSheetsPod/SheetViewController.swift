@@ -73,6 +73,7 @@ open class SheetViewController: UIViewController {
     
     public var willDismiss: ((SheetViewController) -> Void)?
     public var didDismiss: ((SheetViewController) -> Void)?
+    public var didClose: ((SheetViewController) -> Void)?
     
     // MARK: - Private properties
     /// The current preferred container size
@@ -315,6 +316,9 @@ open class SheetViewController: UIViewController {
             self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
             self?.view.backgroundColor = UIColor.clear
         }, completion: { [weak self] complete in
+            if let self = self {
+                self.didClose?(self)
+            }
             self?.dismiss(animated: false, completion: completion)
         })
     }
