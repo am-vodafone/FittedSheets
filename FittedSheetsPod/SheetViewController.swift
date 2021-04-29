@@ -320,19 +320,6 @@ public class SheetViewController: UIViewController {
         guard self.dismissOnOverlayTap else { return }
         self.attemptDismiss(animated: true)
     }
-    
-    /// Animates the sheet to the closed state and then dismisses the view controller
-    public func closeSheet(completion: (() -> Void)? = nil) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
-            self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
-            self?.view.backgroundColor = UIColor.clear
-        }, completion: { [weak self] complete in
-            if let self = self {
-                self.didClose?(self)
-            }
-            self?.dismiss(animated: false, completion: completion)
-        })
-    }
 
     private func addContentView() {
         self.contentViewController.willMove(toParent: self)
@@ -587,6 +574,7 @@ public class SheetViewController: UIViewController {
                     self.didDismiss?(self)
                 }
             } else {
+                self.didClose?(self)
                 self.dismiss(animated: animated, completion: nil)
             }
         }
